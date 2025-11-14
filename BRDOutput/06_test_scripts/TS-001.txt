@@ -1,0 +1,79 @@
+Test Script: TS-001 - User Registration with Email Verification
+
+Test Scenario: As a new visitor, I want to register for an account with my email address, so that I can make purchases and access personalized features.
+
+Prerequisites:
+- Website is accessible
+- User does not have an existing account with the test email
+- Email service is operational
+
+Test Data:
+- First Name: John
+- Last Name: Doe
+- Email: john.doe@example.com
+- Phone: 555-0101
+- Password: Test@1234
+- Confirm Password: Test@1234
+
+Test Steps:
+
+GIVEN the user is on the website homepage
+WHEN the user clicks on the "Register" or "Sign Up" button
+THEN the registration form should be displayed
+
+GIVEN the user is viewing the registration form
+WHEN the user enters the following information:
+  - First Name: "John"
+  - Last Name: "Doe"
+  - Email: "john.doe@example.com"
+  - Contact Number: "555-0101"
+  - Password: "Test@1234"
+  - Confirm Password: "Test@1234"
+AND the user checks the "Accept Terms and Conditions" checkbox
+AND the user clicks the "Submit" or "Register" button
+THEN the system should validate the input
+AND the system should create a new user account with status "Unverified"
+AND the system should display a success message indicating that a verification email has been sent
+AND the system should send a verification email to "john.doe@example.com"
+
+GIVEN the verification email has been sent
+WHEN the user checks their email inbox
+THEN the user should receive an email from the e-commerce system
+AND the email should contain a verification link
+
+GIVEN the user has received the verification email
+WHEN the user clicks on the verification link
+THEN the system should navigate to a confirmation page
+AND the system should update the account status from "Unverified" to "Verified"
+AND the system should display a message "Email verified successfully. You can now login."
+
+GIVEN the user's email has been verified
+WHEN the user navigates to the login page
+AND the user enters email "john.doe@example.com" and password "Test@1234"
+AND the user clicks the "Login" button
+THEN the system should authenticate the user
+AND the system should create a user session
+AND the user should be redirected to the homepage or user dashboard
+AND the user should see their name displayed (e.g., "Welcome, John")
+
+Expected Result:
+- User successfully registers with all required information
+- User account is created with "Unverified" status
+- Verification email is sent to the provided email address
+- User receives email with verification link
+- User clicks verification link and email is verified
+- Account status changes to "Verified"
+- User can login with verified email and password
+- User session is established and user is authenticated
+
+Validation Points:
+- Registration form accepts valid data
+- Required fields are enforced (cannot submit empty)
+- Password and Confirm Password must match
+- Email format is validated
+- Terms and Conditions checkbox is required
+- Verification email is sent successfully
+- Verification link is valid and functional
+- User cannot login before email verification
+- After verification, user can login successfully
+- User session is maintained after login

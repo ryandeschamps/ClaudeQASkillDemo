@@ -1,0 +1,133 @@
+Test Script: TS-029 - Complete Payment with Credit Card
+
+Test Scenario: As a registered buyer, I want to pay for my order using a credit card, so that I can complete my purchase securely.
+
+Prerequisites:
+- User is logged in
+- User has items in shopping cart
+- User has provided billing and shipping addresses
+- Payment gateway (Stripe) is operational
+- SSL is enabled for secure transmission
+
+Test Data:
+- User: john.doe@example.com
+- Cart Items: Classic Blue Oxford Shirt (1x $49.99)
+- Subtotal: $49.99
+- Shipping: $5.00
+- Tax: $4.99
+- Total: $59.98
+- Card Number: 4532015112830366
+- Card CVV: 123
+- Card Expiry: 12/2026
+- Cardholder Name: John Doe
+
+Test Steps:
+
+GIVEN the user is logged in
+AND the user has items in the shopping cart
+AND the user has entered billing address:
+  - 123 Main St, New York, NY 10001
+AND the user has entered shipping address:
+  - 123 Main St, New York, NY 10001
+WHEN the user is on the checkout page
+THEN the page should display order summary:
+  - Item Total: $49.99
+  - Subtotal: $49.99
+  - Shipping Cost: $5.00
+  - Tax: $4.99
+  - Order Total: $59.98
+
+GIVEN the user is viewing the order summary
+WHEN the user scrolls to the payment section
+THEN the payment section should display payment method options:
+  - Credit Card (selected by default)
+  - Debit Card
+  - Net Banking
+AND the Credit Card payment form should be visible
+
+GIVEN the user has selected "Credit Card" as payment method
+WHEN the user enters the following card details:
+  - Card Number: "4532015112830366"
+  - Cardholder Name: "John Doe"
+  - Expiry Date: "12/2026"
+  - CVV: "123"
+AND the user clicks the "Place Order" button
+THEN the system should validate the card number format
+AND the system should validate the expiry date
+AND the system should validate the CVV format
+AND the system should display a processing indicator
+
+GIVEN the card details are valid
+WHEN the system processes the payment through Stripe gateway
+THEN the payment data should be encrypted using SSL
+AND the system should send the payment request to Stripe
+AND Stripe should process the payment
+AND Stripe should return a successful transaction response
+
+GIVEN the payment is successful
+WHEN the system receives the payment confirmation
+THEN the system should create an order record with:
+  - Order ID: (auto-generated)
+  - User ID: john.doe@example.com
+  - Order Status: "Open"
+  - Payment Status: "Completed"
+  - Payment Method: "Credit Card"
+  - Transaction ID: (from Stripe)
+  - Order Date: (current date/time)
+  - Total Amount: $59.98
+AND the system should clear the shopping cart
+AND the system should send an order confirmation email to john.doe@example.com
+AND the system should redirect the user to the order confirmation page
+
+GIVEN the user is on the order confirmation page
+WHEN the page loads
+THEN the page should display:
+  - Success message: "Your order has been placed successfully!"
+  - Order Number: (e.g., ORD-12345)
+  - Order Total: $59.98
+  - Estimated Delivery Date
+  - Shipping Address
+  - Order Items with quantities and prices
+AND the page should have a "Track Order" button
+AND the page should have a "Continue Shopping" button
+
+GIVEN the order has been created
+WHEN the user checks their email
+THEN the user should receive an order confirmation email
+AND the email should contain:
+  - Order number
+  - Order items and quantities
+  - Total amount paid
+  - Shipping address
+  - Estimated delivery date
+  - Link to track order
+
+Expected Result:
+- Checkout page displays complete order summary with all cost breakdowns
+- Payment section shows Credit Card as a payment option
+- User enters valid credit card details
+- System validates card information format
+- Payment is processed securely through Stripe with SSL encryption
+- Stripe approves the transaction
+- System receives successful payment confirmation
+- Order is created with status "Open" and payment status "Completed"
+- Shopping cart is cleared
+- Order confirmation email is sent
+- User is redirected to order confirmation page
+- Confirmation page shows complete order details
+- User receives order confirmation email with all details
+
+Validation Points:
+- Order summary calculates all costs correctly
+- Payment form displays properly
+- Card number validation (checksum, format)
+- Expiry date validation (format, not expired)
+- CVV validation (3-4 digits)
+- Payment data is encrypted during transmission (SSL)
+- Stripe payment gateway integration works correctly
+- Payment transaction is recorded with transaction ID
+- Order is created only after successful payment
+- Cart is cleared after successful order placement
+- Email notification is sent
+- Order confirmation page displays accurate information
+- User can access order details from My Orders section

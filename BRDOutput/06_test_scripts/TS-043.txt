@@ -1,0 +1,127 @@
+Test Script: TS-043 - Post Rating and Review for Purchased Product
+
+Test Scenario: As a registered buyer, I want to rate and review products I have purchased, so that I can share my experience with other customers.
+
+Prerequisites:
+- User is logged in
+- User has previously purchased and received a product
+- Product exists in order history
+- User has not already reviewed this specific product
+
+Test Data:
+- User: john.doe@example.com
+- Product: Classic Blue Oxford Shirt
+- Order ID: ORD-12345
+- Order Status: Delivered
+- Rating: 4 stars (out of 5)
+- Review Title: "Great quality shirt"
+- Review Text: "This shirt fits perfectly and the fabric quality is excellent. Highly recommended for office wear."
+
+Test Steps:
+
+GIVEN the user is logged in as "john.doe@example.com"
+WHEN the user navigates to "My Account" > "My Orders"
+THEN the system should display a list of all user's orders
+AND the list should show Order ID "ORD-12345" with status "Delivered"
+
+GIVEN the user is viewing the order list
+WHEN the user clicks on Order ID "ORD-12345" to view details
+THEN the order details page should display:
+  - Order number: ORD-12345
+  - Order date
+  - Order status: Delivered
+  - List of items in the order
+  - Product: "Classic Blue Oxford Shirt"
+
+GIVEN the user is viewing the order details
+AND the order status is "Delivered"
+WHEN the user views the "Classic Blue Oxford Shirt" in the order items
+THEN the system should display a "Write Review" button next to the product
+AND the button should be clickable
+
+GIVEN the user sees the "Write Review" button
+WHEN the user clicks the "Write Review" button
+THEN the system should verify that the user has purchased this product (already confirmed)
+AND the system should check if the user has already reviewed this product
+AND the system should display the rating and review form
+
+GIVEN the rating and review form is displayed
+WHEN the form loads
+THEN the form should contain the following fields:
+  - Product name (read-only): "Classic Blue Oxford Shirt"
+  - Rating selector (1-5 stars, required)
+  - Review title (text input, optional)
+  - Review text (textarea, required)
+  - Submit button
+  - Cancel button
+
+GIVEN the user is viewing the review form
+WHEN the user selects 4 stars for the rating
+AND the user enters review title: "Great quality shirt"
+AND the user enters review text: "This shirt fits perfectly and the fabric quality is excellent. Highly recommended for office wear."
+AND the user clicks the "Submit" button
+THEN the system should validate that rating is selected
+AND the system should validate that review text is not empty
+AND the system should save the review with the following details:
+  - Product ID: (Classic Blue Oxford Shirt)
+  - User ID: john.doe@example.com
+  - Order ID: ORD-12345
+  - Rating: 4 stars
+  - Review Title: "Great quality shirt"
+  - Review Text: "This shirt fits perfectly and the fabric quality is excellent. Highly recommended for office wear."
+  - Review Date: (current date)
+  - Approval Status: "Pending"
+
+GIVEN the review has been submitted
+WHEN the system saves the review
+THEN the system should display a success message: "Thank you for your review! It will be published after admin approval."
+AND the system should send a notification to the admin about the new review
+AND the user should be redirected back to the order details page
+
+GIVEN the review is saved with status "Pending"
+WHEN the admin logs into the admin panel
+AND the admin navigates to "Ratings & Reviews Management"
+THEN the new review should appear in the pending reviews list
+AND the admin should see review details and have options to "Approve" or "Reject"
+
+GIVEN the admin views the review
+WHEN the admin clicks "Approve"
+THEN the review status should change to "Approved"
+AND the review should become visible on the product detail page
+
+GIVEN the review has been approved
+WHEN any user (buyer or visitor) navigates to the "Classic Blue Oxford Shirt" product detail page
+THEN the product page should display the ratings and reviews section
+AND the review should be visible with:
+  - Reviewer name: "John D." (partially masked for privacy)
+  - Rating: 4 stars
+  - Review title: "Great quality shirt"
+  - Review text: "This shirt fits perfectly and the fabric quality is excellent. Highly recommended for office wear."
+  - Review date
+
+Expected Result:
+- User can access order history and view delivered orders
+- "Write Review" button is available for delivered products
+- System verifies user purchased the product before allowing review
+- Review form displays with rating selector and text fields
+- User submits rating and review successfully
+- Review is saved with status "Pending" (awaiting admin approval)
+- Success message confirms submission
+- Admin receives notification of new review
+- Admin can approve or reject the review
+- Upon approval, review becomes visible on product detail page
+- Other users can see the approved review on the product page
+
+Validation Points:
+- Only delivered products show "Write Review" button
+- User cannot review a product they haven't ordered
+- User can only review each product once per order
+- Rating (1-5 stars) is required
+- Review text is required (minimum length may apply)
+- Review title is optional
+- Review is saved with "Pending" status initially
+- Admin approval is required before review is public
+- Approved reviews display on product page
+- Reviewer identity is partially masked for privacy
+- Review displays with rating, title, text, and date
+- Average rating on product page updates when review is approved
