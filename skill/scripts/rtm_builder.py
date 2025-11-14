@@ -38,6 +38,8 @@ class Requirement:
     req_id: str
     description: str = "N/A"
     priority: str = "N/A"
+    req_type: str = "N/A"
+    affected_roles: str = "N/A"
     source_file: str = ""
     scenarios: List[str] = field(default_factory=list)
 
@@ -167,8 +169,8 @@ class RTMBuilder:
                         req_id_normalized = req_id.upper().replace('_', '-')
 
                         if req_id_normalized not in self.requirements:
-                            # Extract description and priority if available
-                            description, priority = self._extract_req_metadata(
+                            # Extract description and metadata if available
+                            description, priority, req_type, affected_roles = self._extract_req_metadata(
                                 content, req_id
                             )
 
@@ -176,6 +178,8 @@ class RTMBuilder:
                                 req_id=req_id_normalized,
                                 description=description,
                                 priority=priority,
+                                req_type=req_type,
+                                affected_roles=affected_roles,
                                 source_file=os.path.basename(req_file)
                             )
 
@@ -198,26 +202,64 @@ class RTMBuilder:
         self,
         content: str,
         req_id: str
-    ) -> Tuple[str, str]:
+    ) -> Tuple[str, str, str, str]:
         """
-        Extract requirement description and priority from content.
+        Extract requirement metadata from content.
 
         Args:
             content: File content
             req_id: Requirement ID to search for
 
         Returns:
-            Tuple of (description, priority)
+            Tuple of (description, priority, req_type, affected_roles)
         """
         description = "N/A"
         priority = "N/A"
+        req_type = "N/A"
+        affected_roles = "N/A"
 
         # Try to find the requirement in a table or structured format
         # Look for patterns like: FR-001 | Description | Priority
         # or FR-001: Description (Priority: High)
         # or - **REQ-001**: Description (markdown bold format)
 
-        # Pattern 0: Markdown list with bold - matches: - **REQ-001**: Description
+        # Pattern 0a: Enhanced format with heading and metadata fields
+        # ### REQ-001: Title
+        # **Description**: ...
+        # **Priority**: ...
+        # **Type**: ...
+        # **Affected Roles**: ...
+        enhanced_pattern = re.compile(
+            rf'###\s*{re.escape(req_id)}\s*[:-]\s*([^\n]+)\s*'
+            r'(?:.*?\*\*Description\*\*:\s*([^\n]+))?'
+            r'(?:.*?\*\*Priority\*\*:\s*([^\n]+))?'
+            r'(?:.*?\*\*Type\*\*:\s*([^\n]+))?'
+            r'(?:.*?\*\*Affected\s+Roles\*\*:\s*([^\n]+))?',
+            re.IGNORECASE | re.DOTALL
+        )
+        match = enhanced_pattern.search(content)
+        if match:
+            title = match.group(1).strip()
+            desc = match.group(2).strip() if match.group(2) else title
+            prio = match.group(3).strip() if match.group(3) else "N/A"
+            rtype = match.group(4).strip() if match.group(4) else "N/A"
+            roles = match.group(5).strip() if match.group(5) else "N/A"
+            return desc, prio, rtype, roles
+
+        # Pattern 0b: Table format with extended columns (Priority, Type, Affected Roles)
+        extended_table_pattern = re.compile(
+            rf'{re.escape(req_id)}\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)',
+            re.IGNORECASE
+        )
+        match = extended_table_pattern.search(content)
+        if match:
+            description = match.group(1).strip()
+            priority = match.group(2).strip()
+            req_type = match.group(3).strip()
+            affected_roles = match.group(4).strip()
+            return description, priority, req_type, affected_roles
+
+        # Pattern 0c: Markdown list with bold - matches: - **REQ-001**: Description
         markdown_bold_pattern = re.compile(
             rf'-\s*\*\*{re.escape(req_id)}\*\*\s*:\s*([^\n]+)',
             re.IGNORECASE
@@ -242,9 +284,9 @@ class RTMBuilder:
             else:
                 description = line
 
-            return description, priority
+            return description, priority, req_type, affected_roles
 
-        # Pattern 1: Table format with pipes
+        # Pattern 1: Table format with pipes (basic 3-column: ID | Description | Priority)
         table_pattern = re.compile(
             rf'{re.escape(req_id)}\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)',
             re.IGNORECASE
@@ -253,7 +295,7 @@ class RTMBuilder:
         if match:
             description = match.group(1).strip()
             priority = match.group(2).strip()
-            return description, priority
+            return description, priority, req_type, affected_roles
 
         # Pattern 2: Line format with colon (without bold)
         line_pattern = re.compile(
@@ -280,7 +322,7 @@ class RTMBuilder:
             else:
                 description = line
 
-            return description, priority
+            return description, priority, req_type, affected_roles
 
         # Pattern 3: Markdown header
         header_pattern = re.compile(
@@ -290,9 +332,9 @@ class RTMBuilder:
         match = header_pattern.search(content)
         if match:
             description = match.group(1).strip()
-            return description, priority
+            return description, priority, req_type, affected_roles
 
-        return description, priority
+        return description, priority, req_type, affected_roles
 
     def extract_scenarios(
         self,
@@ -500,6 +542,8 @@ class RTMBuilder:
                     "Requirement_ID",
                     "Requirement_Description",
                     "Priority",
+                    "Type",
+                    "Affected_Roles",
                     "Test_Scenario_IDs",
                     "Test_Script_Available",
                     "Coverage_Status",
@@ -510,7 +554,7 @@ class RTMBuilder:
                 if not self.requirements:
                     writer.writerow([
                         "No requirements found",
-                        "N/A", "N/A", "N/A", "N/A", "Not Covered", ""
+                        "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Not Covered", ""
                     ])
                 else:
                     for req_id in sorted(self.requirements.keys()):
@@ -545,6 +589,8 @@ class RTMBuilder:
                             req_id,
                             req.description,
                             req.priority,
+                            req.req_type,
+                            req.affected_roles,
                             scenario_ids,
                             test_script_available,
                             coverage_status,
@@ -618,11 +664,11 @@ class RTMBuilder:
             if stats.uncovered_requirements > 0:
                 f.write("## ⚠️ Uncovered Requirements\n\n")
                 f.write("The following requirements have no test scenarios:\n\n")
-                f.write("| Requirement ID | Description | Priority |\n")
-                f.write("|----------------|-------------|----------|\n")
+                f.write("| Requirement ID | Description | Priority | Type | Affected Roles |\n")
+                f.write("|----------------|-------------|----------|------|----------------|\n")
                 for req_id, req in sorted(self.requirements.items()):
                     if not req.scenarios:
-                        f.write(f"| {req_id} | {req.description} | {req.priority} |\n")
+                        f.write(f"| {req_id} | {req.description} | {req.priority} | {req.req_type} | {req.affected_roles} |\n")
                 f.write("\n")
 
             # Orphaned scenarios

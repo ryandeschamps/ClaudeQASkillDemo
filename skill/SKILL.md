@@ -82,6 +82,25 @@ Assign a unique ID to each requirement in the format: REQ-001, REQ-002, etc.
 Group requirements by functional area (e.g., User Management, Data Processing, Security, Performance).
 
 **REQUIRED FORMAT (for rtm_builder.py script consumption):**
+
+**ENHANCED FORMAT (with metadata - RECOMMENDED):**
+```markdown
+## [Functional Area Name]
+
+### REQ-001: [Requirement Title]
+**Description**: [Clear, concise requirement statement]
+**Priority**: Critical|High|Medium|Low
+**Type**: Functional|Non-Functional|Security|Performance|Usability
+**Affected Roles**: [Comma-separated list of user roles, e.g., "Buyer, Seller, Admin"]
+
+### REQ-002: [Requirement Title]
+**Description**: [Clear, concise requirement statement]
+**Priority**: High
+**Type**: Functional
+**Affected Roles**: Admin, Guest
+```
+
+**ALTERNATE FORMATS (also supported):**
 ```markdown
 ## [Functional Area Name]
 - **REQ-001**: [Clear, concise requirement statement]
@@ -89,11 +108,16 @@ Group requirements by functional area (e.g., User Management, Data Processing, S
 ```
 OR
 ```markdown
-| Requirement ID | Description | Priority |
-|---------------|-------------|----------|
-| REQ-001 | [Requirement statement] | High |
-| REQ-002 | [Requirement statement] | Medium |
+| Requirement ID | Description | Priority | Type | Affected Roles |
+|---------------|-------------|----------|------|----------------|
+| REQ-001 | [Requirement statement] | High | Functional | Buyer, Admin |
+| REQ-002 | [Requirement statement] | Medium | Security | All Users |
 ```
+
+**Metadata Field Descriptions:**
+- **Priority**: Business priority (Critical, High, Medium, Low) - helps prioritize test execution
+- **Type**: Requirement category - helps organize testing by domain
+- **Affected Roles**: User roles impacted by this requirement - helps identify stakeholders and test coverage
 
 Include both explicit requirements (stated in the document) and implicit requirements (derived from context).
 Save to OUTPUT_DIR/00_requirements.md (numbered 00 to appear first in directory listing).
@@ -205,6 +229,15 @@ Use a systematic approach to ensure NO combinations are missed:
 3. Use nested loops or itertools.product() approach to generate ALL combinations
 4. Assign sequential Variant_IDs starting from V001
 
+**PROGRESS TRACKING (for long-running generation):**
+
+When generating variants, provide real-time progress updates:
+- **Before starting**: Report total scenarios and estimated variants (e.g., "Generating ~50,000 variants for 100 scenarios...")
+- **During generation**: Update progress at regular intervals
+  - Report every 10-20 scenarios completed (e.g., "Completed 20/100 scenarios - 10,248 variants generated so far")
+  - Show percentage complete (e.g., "[25%] Processing scenario TS-025...")
+- **After completion**: Report final count and duration (e.g., "✓ Generated 47,520 variants in 2m 15s")
+
 **REQUIRED CSV FORMAT (for combinatorial.py script consumption):**
 
 **Column structure:**
@@ -271,7 +304,41 @@ For EACH AND EVERY variant in OUTPUT_DIR/04_variants.csv, generate corresponding
 DO NOT skip variants. One variant = one data row.
 Include the Variant_ID as the first column to maintain traceability.
 Save this data in OUTPUT_DIR/05_test_data.csv.
+
+**PROGRESS TRACKING (for large datasets):**
+
+When generating test data, provide regular progress updates:
+- **Before starting**: Report total variants from 04_variants.csv (e.g., "Generating test data for 47,520 variants...")
+- **During generation**: Update progress at regular intervals
+  - Report every 5,000-10,000 variants (e.g., "Generated 10,000/47,520 variants [21%]")
+  - Show time estimates if generation is slow (e.g., "~3 minutes remaining")
+- **After completion**: Report final count (e.g., "✓ Generated test data for 47,520 variants")
+
 VERIFICATION CHECKPOINT: After generating, verify row count matches OUTPUT_DIR/04_variants.csv and report: "Generated test data for X variants."
+
+**DATA VALIDATION (CRITICAL):**
+
+After generating test data, run the validation script to ensure data quality and consistency:
+
+```bash
+python3 skill/scripts/validate_test_data.py OUTPUT_DIR/04_variants.csv OUTPUT_DIR/05_test_data.csv
+```
+
+**IMPORTANT:** Replace OUTPUT_DIR with the actual directory path being used (e.g., `deliverables/` or custom path).
+
+**The validation script checks:**
+- Row count matches between variants and test data
+- All Variant_IDs are present in both files
+- Parameter consistency (test data reflects variant parameters)
+- Data completeness (no empty critical fields)
+
+**Expected output:**
+- ✅ "All validations passed!" - Continue to next step
+- ❌ "Validation completed with errors" - Fix errors before proceeding:
+  - Missing test data rows: Generate data for missing variants
+  - Row count mismatch: Verify generation process completed fully
+  - Empty fields: Populate missing test data values
+
 Quality check: Ensure data is realistic, valid, and matches the variant parameters.
 
 
@@ -287,12 +354,18 @@ DO NOT skip any scenarios. Missing scripts break traceability.
 
 BATCH PROCESSING STRATEGY (for large scenario counts):
 
+**PROGRESS TRACKING:**
+
 First: Count total scenarios to generate (e.g., "Need to generate 85 test scripts")
 Batch 1 (scripts 1-20): Generate TS-001 through TS-020, save all files
+  - Report: "[24%] Completed batch 1: 20/85 test scripts generated"
 Batch 2 (scripts 21-40): Generate TS-021 through TS-040, save all files
+  - Report: "[47%] Completed batch 2: 40/85 test scripts generated"
 Batch 3 (scripts 41-60): Generate TS-041 through TS-060, save all files
+  - Report: "[71%] Completed batch 3: 60/85 test scripts generated"
 Continue until ALL scenarios have scripts
-After each batch: Report progress (e.g., "Completed 40/85 test scripts")
+After each batch: Report progress with percentage (e.g., "[94%] Completed 80/85 test scripts")
+Final: Report completion (e.g., "✓ Generated all 85 test scripts")
 
 VERIFICATION CHECKPOINT:
 
@@ -420,13 +493,25 @@ python3 skill/scripts/combinatorial.py OUTPUT_DIR/04_variants.csv --output OUTPU
 9. Step 9: Draft Full Test Plan:
 - Synthesize all previous outputs into a comprehensive test plan document.
 - The plan should include:
-- Executive summary with key statistics
-- Scope and objectives
-- Test approach (exhaustive generation + combinatorial optimization)
-- Schedule and resource estimates
-- Summary of all test scenarios and variants (both exhaustive and optimized)
-- Traceability matrix summary
-- Risk assessment
+  - **Executive Summary**: Key statistics and overview
+  - **Scope and Objectives**: What is being tested and why
+  - **Test Approach**: Exhaustive generation + combinatorial optimization methodology
+  - **Test Environment Specifications**:
+    - **Hardware Requirements**: Server specs, client device requirements (Desktop, Mobile, Tablet configurations)
+    - **Software Requirements**:
+      - Operating Systems (Windows 10/11, macOS 12+, Ubuntu 20.04+, iOS 14+, Android 10+)
+      - Browsers and versions (Chrome 120+, Firefox 121+, Safari 17+, Edge 120+)
+      - Database systems and versions (e.g., PostgreSQL 14+, MySQL 8.0+, MongoDB 6.0+)
+      - Application server requirements (e.g., Node.js 18+, Python 3.9+, Java 17+)
+    - **Network Configuration**: Bandwidth requirements, VPN/proxy settings, CDN configurations
+    - **Test Data Requirements**: Database setup, seed data, test user accounts
+    - **Third-Party Dependencies**: External APIs, payment gateways, authentication services
+    - **Tools and Frameworks**: Test automation tools, monitoring tools, CI/CD pipeline requirements
+  - **Schedule and Resource Estimates**: Timeline and staffing needs
+  - **Summary of Test Scenarios**: Overview of all test scenarios and variants (both exhaustive and optimized)
+  - **Traceability Matrix Summary**: Link to RTM and coverage statistics
+  - **Risk Assessment**: Potential risks and mitigation strategies
+  - **Entry and Exit Criteria**: When testing can start and when it's considered complete
 - Save the document as OUTPUT_DIR/08_test_plan.md.
 
 10. Step 10: Build Requirements Traceability Matrix (RTM):
@@ -453,10 +538,16 @@ python3 skill/scripts/rtm_builder.py OUTPUT_DIR/03_test_scenarios.md OUTPUT_DIR/
 
 **Expected RTM Output Format:**
 ```csv
-Requirement_ID,Requirement_Description,Priority,Test_Scenario_IDs,Test_Script_Available,Coverage_Status,Notes
-REQ-001,Users shall be able to log in...,N/A,"TS-007, TS-009, TS-017",Yes,Covered,
-REQ-002,Password reset functionality...,High,"TS-013, TS-014",Yes,Covered,
+Requirement_ID,Requirement_Description,Priority,Type,Affected_Roles,Test_Scenario_IDs,Test_Script_Available,Coverage_Status,Notes
+REQ-001,Users shall be able to log in...,High,Functional,"Buyer, Seller, Admin","TS-007, TS-009, TS-017",Yes,Covered,
+REQ-002,Password reset functionality...,High,Security,"All Users","TS-013, TS-014",Yes,Covered,
+REQ-003,System performance requirements...,Medium,Performance,N/A,TS-025,Yes,Covered,
 ```
+
+**Enhanced Metadata Columns:**
+- **Priority**: Extracted from requirements document (Critical/High/Medium/Low, or N/A if not specified)
+- **Type**: Requirement category (Functional/Non-Functional/Security/Performance/Usability, or N/A if not specified)
+- **Affected_Roles**: User roles impacted by this requirement (extracted from requirements, or N/A if not specified)
 
 11. Completion and Summary:
 - List all files in OUTPUT_DIR directory with file sizes
