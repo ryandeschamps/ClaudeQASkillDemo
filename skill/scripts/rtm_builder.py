@@ -386,12 +386,19 @@ class RTMBuilder:
         if priority_match:
             priority = priority_match.group(1).strip()
 
-        # Extract related requirements
+        # Extract related requirements (with or without bold markers)
         req_match = re.search(
-            r'Related Requirements:\s*([^\n]+)',
+            r'\*\*Related Requirements\*\*:\s*([^\n]+)',
             content,
             re.IGNORECASE
         )
+        if not req_match:
+            # Try without bold markers for backward compatibility
+            req_match = re.search(
+                r'Related Requirements:\s*([^\n]+)',
+                content,
+                re.IGNORECASE
+            )
         if req_match:
             req_line = req_match.group(1)
             found_reqs = self.req_pattern.findall(req_line)
