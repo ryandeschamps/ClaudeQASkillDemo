@@ -163,49 +163,234 @@ All errors provide clear, actionable messages.
 
 ### 2. rtm_builder.py
 
-**Purpose:** Builds Requirements Traceability Matrix (RTM) by mapping requirements to test scenarios.
+**Purpose:** Builds comprehensive Requirements Traceability Matrix (RTM) by mapping requirements to test scenarios and scripts.
 
-**Version:** 1.0.0
+**Version:** 2.0.0
+
+**Key Features:**
+- Automatic requirement metadata extraction (description, priority)
+- Test script availability tracking
+- Coverage statistics and gap analysis
+- Comprehensive input validation
+- Multiple requirement file format support
+- Detailed logging and reporting
+- Optional gap analysis report generation
+- Orphaned scenario detection
 
 #### Usage
 
+**Basic Usage (Recommended):**
 ```bash
-python3 rtm_builder.py <scenarios_file> <req_file_1> [<req_file_2> ...]
+python3 rtm_builder.py deliverables/03_test_scenarios.md requirements.md \
+    --test-scripts deliverables/06_test_scripts
 ```
 
-**Example:**
+**Multiple Requirement Files:**
 ```bash
-python3 rtm_builder.py deliverables/03_test_scenarios.md requirements/BRD.md
+python3 rtm_builder.py deliverables/03_test_scenarios.md \
+    req1.md req2.md req3.md --test-scripts deliverables/06_test_scripts
+```
+
+**With Gap Analysis Report:**
+```bash
+python3 rtm_builder.py deliverables/03_test_scenarios.md requirements.md \
+    --test-scripts deliverables/06_test_scripts --gap-report
+```
+
+**Custom Output Path:**
+```bash
+python3 rtm_builder.py deliverables/03_test_scenarios.md requirements.md \
+    --output custom_rtm.csv
+```
+
+**With Verbose Logging:**
+```bash
+python3 rtm_builder.py deliverables/03_test_scenarios.md requirements.md \
+    --test-scripts deliverables/06_test_scripts --verbose
 ```
 
 #### Input Format
 
 **Requirements Files:**
 - Any markdown or text file containing requirement IDs
-- Requirement IDs should match pattern: `REQ-001`, `REQ_001`, or `REQ001`
+- Supported patterns: `FR-001`, `NFR-001`, `REQ-001`, `BR-001`, `UR-001`
+- Supports underscores: `FR_001`, `NFR_001`
+- Can extract metadata from structured formats:
+  - Table format: `FR-001 | Description | Priority`
+  - Line format: `FR-001: Description (Priority: High)`
+  - Markdown headers: `### FR-001: Description`
 
-**Scenarios File:**
-- Markdown file with test scenarios
-- Scenario IDs should match pattern: `TS-001`, `TS_001`, or `TS001`
-- Requirements should be referenced in scenario descriptions
+**Test Scenarios File:**
+- Markdown file with test scenarios (e.g., `03_test_scenarios.md`)
+- Scenario IDs should match pattern: `TS-001`, `TS_001`, etc.
+- Should include metadata sections:
+  - `**Related Requirements**: FR-001, FR-002`
+  - `**Priority**: Critical/High/Medium/Low`
+  - Title after `###` header
+
+**Test Scripts Directory (Optional):**
+- Directory containing test script files
+- Scripts should be named: `TS-001.txt`, `TS-002.txt`, etc.
+- Used to check test script availability
 
 #### Output
 
-Generates a CSV file at `deliverables/09_rtm.csv`:
+**Primary Output (CSV):**
+The script generates a rich RTM CSV file at `deliverables/09_rtm.csv`:
 
 ```csv
-Requirement_ID,Test_Scenario_ID(s)
-REQ-001,"TS-001, TS-002, TS-003"
-REQ-002,"TS-004"
-REQ-003,"NOT COVERED"
+Requirement_ID,Requirement_Description,Priority,Test_Scenario_IDs,Test_Script_Available,Coverage_Status,Notes
+FR-001,Login,Critical,"TS-013, TS-014, TS-015",Yes,Covered,
+FR-002,Registration,Critical,"TS-011, TS-012",Yes,Covered,
+FR-999,Unused Feature,Low,N/A,N/A,Not Covered,No test scenarios mapped to this requirement
+```
+
+**Columns:**
+- **Requirement_ID**: Unique requirement identifier
+- **Requirement_Description**: Extracted description (if available)
+- **Priority**: Extracted priority (if available)
+- **Test_Scenario_IDs**: Comma-separated list of mapped scenarios
+- **Test_Script_Available**: Yes/No/Partial/N/A
+- **Coverage_Status**: Covered/Not Covered
+- **Notes**: Additional information (e.g., missing scripts, coverage gaps)
+
+**Gap Analysis Report (Optional):**
+When `--gap-report` flag is used, generates `<output>_gap_report.md`:
+
+```markdown
+# RTM Gap Analysis Report
+
+## Summary
+- Total Requirements: 26
+- Coverage: 100.0%
+- Uncovered Requirements: 0
+- Orphaned Scenarios: 0
+
+## ⚠️ Uncovered Requirements
+(Lists requirements with no test scenarios)
+
+## ⚠️ Orphaned Test Scenarios
+(Lists scenarios not linked to any requirement)
+
+## ℹ️ Scenarios Without Test Scripts
+(Lists scenarios missing script files)
+```
+
+**Console Summary:**
+The script also prints a summary to console:
+
+```
+============================================================
+RTM GENERATION SUMMARY
+============================================================
+
+📋 Requirements:
+  Total Requirements: 26
+  Covered: 26 (100.0%)
+  Uncovered: 0
+
+🧪 Test Scenarios:
+  Total Scenarios: 125
+  Orphaned (no requirements): 0
+  With Test Scripts: 125
+  Without Test Scripts: 0
+
+✅ Perfect traceability! All requirements covered and all scenarios linked.
+============================================================
 ```
 
 #### Algorithm
 
-1. Extract all requirement IDs from requirement files
-2. For each test scenario, find mentioned requirement IDs
-3. Map requirements to scenarios
-4. Flag requirements with no coverage as "NOT COVERED"
+**Requirement Extraction:**
+1. Read all requirement files
+2. Find requirement IDs using regex patterns
+3. Attempt to extract metadata (description, priority) from context
+4. Store requirement objects with metadata
+
+**Scenario Extraction:**
+1. Read test scenarios file
+2. Split by scenario IDs
+3. Extract scenario metadata (title, priority, related requirements)
+4. Check if test script file exists (if test scripts directory provided)
+5. Store scenario objects with metadata
+
+**RTM Building:**
+1. For each scenario, map to its related requirements
+2. Build bidirectional mapping (requirements ↔ scenarios)
+3. Flag requirements mentioned in scenarios but not in requirement files
+4. Calculate coverage statistics
+
+**Gap Detection:**
+- **Uncovered Requirements**: Requirements with no mapped scenarios
+- **Orphaned Scenarios**: Scenarios not linked to any requirement
+- **Missing Scripts**: Scenarios without corresponding script files
+
+#### Metadata Extraction
+
+The script intelligently extracts requirement metadata from various formats:
+
+**Table Format:**
+```
+| ID | Description | Priority |
+|----|-------------|----------|
+| FR-001 | User Login | Critical (1) |
+```
+
+**Colon Format:**
+```
+FR-001: User must be able to login (Priority: Critical)
+```
+
+**Markdown Header:**
+```markdown
+### FR-001: User Login Feature
+```
+
+If metadata cannot be extracted, it defaults to "N/A".
+
+#### Coverage Statistics
+
+The script calculates and reports:
+- Total requirements and coverage percentage
+- Number of uncovered requirements
+- Total scenarios and orphaned scenarios
+- Test script availability statistics
+
+#### Performance
+
+- **Time Complexity**: O(R + S) where R = requirements, S = scenarios
+- **Typical Execution**: < 1 second for 26 requirements, 125 scenarios
+
+#### Error Handling
+
+The script provides comprehensive error handling:
+- File not found errors
+- File permission errors
+- File encoding errors (uses UTF-8 with error ignore)
+- Empty file detection
+- Invalid path detection
+- Missing metadata graceful degradation
+
+All errors provide clear, actionable messages.
+
+#### Best Practices
+
+1. **Include Test Scripts Directory**: Always use `--test-scripts` flag for complete tracking
+2. **Use Gap Report**: Run with `--gap-report` to get detailed gap analysis
+3. **Multiple Requirement Files**: Pass all requirement documents for complete traceability
+4. **Structured Requirements**: Use structured formats (tables, headers) for better metadata extraction
+5. **Link Scenarios**: Always include `**Related Requirements**` in scenario descriptions
+6. **Review Summary**: Check the console summary for coverage gaps
+
+#### Supported Requirement ID Patterns
+
+- Functional Requirements: `FR-001`, `FR_001`
+- Non-Functional Requirements: `NFR-001`, `NFR_001`
+- Generic Requirements: `REQ-001`, `REQ_001`
+- Business Requirements: `BR-001`, `BR_001`
+- User Requirements: `UR-001`, `UR_001`
+- Case insensitive
+- Automatically normalized (underscores → dashes, uppercase)
 
 ---
 
@@ -214,12 +399,25 @@ REQ-003,"NOT COVERED"
 The scripts integrate with the QA skill workflow as follows:
 
 ```
+Step 3: Test Scenarios → 03_test_scenarios.md
 Step 4: Define Variants → 04_variants.csv (50 variants)
-                          ↓
-Step 7: Run combinatorial.py → 07_combinatorial_plan.md (optimal subset)
-                          ↓
-                  Use selected variants for testing
+Step 6: Test Scripts → 06_test_scripts/ directory
+          ↓                     ↓                    ↓
+          |                     |                    |
+Step 7:   |          Run combinatorial.py           |
+          |        → 07_combinatorial_plan.md       |
+          |          (optimal subset)                |
+          |                                          |
+Step 9:   └─────────────────┬────────────────────────┘
+                            ↓
+                   Run rtm_builder.py
+                  → 09_rtm.csv + gap report
+                   (requirements traceability)
 ```
+
+**Script Execution Order:**
+1. **Step 7**: `combinatorial.py` - Optimizes test variants
+2. **Step 9**: `rtm_builder.py` - Builds requirements traceability
 
 ## Requirements
 
@@ -253,6 +451,20 @@ Step 7: Run combinatorial.py → 07_combinatorial_plan.md (optimal subset)
 
 ## Version History
 
+### v2.0.0 (2025-11-14) - rtm_builder.py
+- Complete rewrite for production readiness
+- Rich RTM output with 7 columns (vs 2 in v1.0)
+- Automatic requirement metadata extraction (description, priority)
+- Test script availability tracking
+- Coverage statistics and gap analysis
+- Gap analysis report generation
+- Orphaned scenario detection
+- Multiple requirement file format support
+- Comprehensive input validation
+- Configurable CLI with argparse
+- Detailed logging and progress tracking
+- Better error handling and graceful degradation
+
 ### v2.0.0 (2025-11-14) - combinatorial.py
 - Complete rewrite for production readiness
 - Added select mode for optimal variant selection
@@ -268,6 +480,7 @@ Step 7: Run combinatorial.py → 07_combinatorial_plan.md (optimal subset)
 - Basic pairwise generation
 - Simple CSV parsing
 - Markdown output
+- Basic RTM generation
 
 ## Contributing
 

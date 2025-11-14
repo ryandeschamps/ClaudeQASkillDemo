@@ -69,8 +69,22 @@ Follow this workflow precisely. Create a `deliverables/` directory to store all 
     - Save the document as `deliverables/08_test_plan.md`.
 
 10. **Step 9: Build Requirements Traceability Matrix (RTM):**
-    - **Execute the `scripts/rtm_builder.py` script.** Pass the paths to the requirements file(s) and `deliverables/03_test_scenarios.md` as arguments.
-    - The script will generate a CSV mapping requirements to test scenarios.
-    - Save the resulting RTM to `deliverables/09_rtm.csv`.
+    - **Execute the `scripts/rtm_builder.py` script** using the command:
+      ```bash
+      python3 skill/scripts/rtm_builder.py deliverables/03_test_scenarios.md \
+          <requirement_file(s)> --test-scripts deliverables/06_test_scripts
+      ```
+      Replace `<requirement_file(s)>` with your requirements documents (e.g., `BRD.md`, `requirements_assessment.md`)
+    - The script will generate a comprehensive RTM with:
+      - Requirement-to-scenario mappings
+      - Coverage status and statistics
+      - Test script availability tracking
+      - Gap analysis (uncovered requirements, orphaned scenarios)
+    - The output is automatically saved to `deliverables/09_rtm.csv`.
+    - Review the summary statistics and address any coverage gaps.
+    - **Optional flags:**
+      - `--gap-report` - Generate detailed gap analysis report (recommended)
+      - `--output <path>` - Specify custom output path
+      - `--verbose` - Enable detailed logging
 
 11. **Completion:** Notify the user that all QA artifacts have been generated and are available in the `deliverables/` directory.
