@@ -40,6 +40,8 @@ class Requirement:
     priority: str = "N/A"
     req_type: str = "N/A"
     affected_roles: str = "N/A"
+    source_page: str = "N/A"
+    source_excerpt: str = "N/A"
     source_file: str = ""
     scenarios: List[str] = field(default_factory=list)
 
@@ -170,7 +172,7 @@ class RTMBuilder:
 
                         if req_id_normalized not in self.requirements:
                             # Extract description and metadata if available
-                            description, priority, req_type, affected_roles = self._extract_req_metadata(
+                            description, priority, req_type, affected_roles, source_page, source_excerpt = self._extract_req_metadata(
                                 content, req_id
                             )
 
@@ -180,6 +182,8 @@ class RTMBuilder:
                                 priority=priority,
                                 req_type=req_type,
                                 affected_roles=affected_roles,
+                                source_page=source_page,
+                                source_excerpt=source_excerpt,
                                 source_file=os.path.basename(req_file)
                             )
 
@@ -202,7 +206,7 @@ class RTMBuilder:
         self,
         content: str,
         req_id: str
-    ) -> Tuple[str, str, str, str]:
+    ) -> Tuple[str, str, str, str, str, str]:
         """
         Extract requirement metadata from content.
 
@@ -211,12 +215,14 @@ class RTMBuilder:
             req_id: Requirement ID to search for
 
         Returns:
-            Tuple of (description, priority, req_type, affected_roles)
+            Tuple of (description, priority, req_type, affected_roles, source_page, source_excerpt)
         """
         description = "N/A"
         priority = "N/A"
         req_type = "N/A"
         affected_roles = "N/A"
+        source_page = "N/A"
+        source_excerpt = "N/A"
 
         # Try to find the requirement in a table or structured format
         # Look for patterns like: FR-001 | Description | Priority
@@ -229,12 +235,16 @@ class RTMBuilder:
         # **Priority**: ...
         # **Type**: ...
         # **Affected Roles**: ...
+        # **Source Page**: ... (for derived requirements)
+        # **Source Excerpt**: ... (for derived requirements)
         enhanced_pattern = re.compile(
             rf'###\s*{re.escape(req_id)}\s*[:-]\s*([^\n]+)\s*'
             r'(?:.*?\*\*Description\*\*:\s*([^\n]+))?'
             r'(?:.*?\*\*Priority\*\*:\s*([^\n]+))?'
             r'(?:.*?\*\*Type\*\*:\s*([^\n]+))?'
-            r'(?:.*?\*\*Affected\s+Roles\*\*:\s*([^\n]+))?',
+            r'(?:.*?\*\*Affected\s+Roles\*\*:\s*([^\n]+))?'
+            r'(?:.*?\*\*Source\s+Page\*\*:\s*([^\n]+))?'
+            r'(?:.*?\*\*Source\s+Excerpt\*\*:\s*"?([^"\n]+)"?)?',
             re.IGNORECASE | re.DOTALL
         )
         match = enhanced_pattern.search(content)
@@ -244,11 +254,13 @@ class RTMBuilder:
             prio = match.group(3).strip() if match.group(3) else "N/A"
             rtype = match.group(4).strip() if match.group(4) else "N/A"
             roles = match.group(5).strip() if match.group(5) else "N/A"
-            return desc, prio, rtype, roles
+            src_page = match.group(6).strip() if match.group(6) else "N/A"
+            src_excerpt = match.group(7).strip() if match.group(7) else "N/A"
+            return desc, prio, rtype, roles, src_page, src_excerpt
 
-        # Pattern 0b: Table format with extended columns (Priority, Type, Affected Roles)
+        # Pattern 0b: Table format with extended columns (Priority, Type, Affected Roles, Source Page, Source Excerpt)
         extended_table_pattern = re.compile(
-            rf'{re.escape(req_id)}\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)',
+            rf'{re.escape(req_id)}\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)\s*[|,]\s*([^|,\n]+)(?:\s*[|,]\s*([^|,\n]+))?(?:\s*[|,]\s*([^|,\n]+))?',
             re.IGNORECASE
         )
         match = extended_table_pattern.search(content)
@@ -257,9 +269,11 @@ class RTMBuilder:
             priority = match.group(2).strip()
             req_type = match.group(3).strip()
             affected_roles = match.group(4).strip()
-            return description, priority, req_type, affected_roles
+            source_page = match.group(5).strip() if match.group(5) else "N/A"
+            source_excerpt = match.group(6).strip() if match.group(6) else "N/A"
+            return description, priority, req_type, affected_roles, source_page, source_excerpt
 
-        # Pattern 0c: Markdown list with bold - matches: - **REQ-001**: Description
+        # Pattern 0c: Markdown list with bold - matches: - **REQ-001**: Description (Source: Page X - "excerpt")
         markdown_bold_pattern = re.compile(
             rf'-\s*\*\*{re.escape(req_id)}\*\*\s*:\s*([^\n]+)',
             re.IGNORECASE
@@ -267,10 +281,29 @@ class RTMBuilder:
         match = markdown_bold_pattern.search(content)
         if match:
             line = match.group(1).strip()
+
+            # Check for source citation in format: (Source: Page X - "excerpt")
+            source_match = re.search(
+                r'\(Source:\s*Page\s+(\d+|\w+)\s*-\s*"([^"]+)"\)',
+                line,
+                re.IGNORECASE
+            )
+            if source_match:
+                source_page = f"Page {source_match.group(1)}"
+                source_excerpt = source_match.group(2).strip()
+                # Remove source citation from description
+                description = re.sub(
+                    r'\s*\(Source:\s*Page\s+\d+\s*-\s*"[^"]+"\)',
+                    '',
+                    line
+                ).strip()
+            else:
+                description = line
+
             # Check if priority is mentioned
             priority_match = re.search(
                 r'\(?\s*(?:Priority|P):\s*(\w+(?:\s*\(\d+\))?)\)?',
-                line,
+                description,
                 re.IGNORECASE
             )
             if priority_match:
@@ -279,12 +312,10 @@ class RTMBuilder:
                 description = re.sub(
                     r'\(?\s*(?:Priority|P):\s*\w+(?:\s*\(\d+\))?\)?',
                     '',
-                    line
+                    description
                 ).strip()
-            else:
-                description = line
 
-            return description, priority, req_type, affected_roles
+            return description, priority, req_type, affected_roles, source_page, source_excerpt
 
         # Pattern 1: Table format with pipes (basic 3-column: ID | Description | Priority)
         table_pattern = re.compile(
@@ -295,7 +326,7 @@ class RTMBuilder:
         if match:
             description = match.group(1).strip()
             priority = match.group(2).strip()
-            return description, priority, req_type, affected_roles
+            return description, priority, req_type, affected_roles, source_page, source_excerpt
 
         # Pattern 2: Line format with colon (without bold)
         line_pattern = re.compile(
@@ -322,7 +353,7 @@ class RTMBuilder:
             else:
                 description = line
 
-            return description, priority, req_type, affected_roles
+            return description, priority, req_type, affected_roles, source_page, source_excerpt
 
         # Pattern 3: Markdown header
         header_pattern = re.compile(
@@ -332,9 +363,9 @@ class RTMBuilder:
         match = header_pattern.search(content)
         if match:
             description = match.group(1).strip()
-            return description, priority, req_type, affected_roles
+            return description, priority, req_type, affected_roles, source_page, source_excerpt
 
-        return description, priority, req_type, affected_roles
+        return description, priority, req_type, affected_roles, source_page, source_excerpt
 
     def extract_scenarios(
         self,
@@ -544,6 +575,8 @@ class RTMBuilder:
                     "Priority",
                     "Type",
                     "Affected_Roles",
+                    "Source_Page",
+                    "Source_Excerpt",
                     "Test_Scenario_IDs",
                     "Test_Script_Available",
                     "Coverage_Status",
@@ -554,7 +587,7 @@ class RTMBuilder:
                 if not self.requirements:
                     writer.writerow([
                         "No requirements found",
-                        "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Not Covered", ""
+                        "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Not Covered", ""
                     ])
                 else:
                     for req_id in sorted(self.requirements.keys()):
@@ -591,6 +624,8 @@ class RTMBuilder:
                             req.priority,
                             req.req_type,
                             req.affected_roles,
+                            req.source_page,
+                            req.source_excerpt,
                             scenario_ids,
                             test_script_available,
                             coverage_status,
@@ -664,11 +699,13 @@ class RTMBuilder:
             if stats.uncovered_requirements > 0:
                 f.write("## ⚠️ Uncovered Requirements\n\n")
                 f.write("The following requirements have no test scenarios:\n\n")
-                f.write("| Requirement ID | Description | Priority | Type | Affected Roles |\n")
-                f.write("|----------------|-------------|----------|------|----------------|\n")
+                f.write("| Requirement ID | Description | Priority | Type | Affected Roles | Source Page | Source Excerpt |\n")
+                f.write("|----------------|-------------|----------|------|----------------|-------------|----------------|\n")
                 for req_id, req in sorted(self.requirements.items()):
                     if not req.scenarios:
-                        f.write(f"| {req_id} | {req.description} | {req.priority} | {req.req_type} | {req.affected_roles} |\n")
+                        # Truncate source excerpt for table display
+                        excerpt = req.source_excerpt if len(req.source_excerpt) <= 50 else req.source_excerpt[:47] + "..."
+                        f.write(f"| {req_id} | {req.description} | {req.priority} | {req.req_type} | {req.affected_roles} | {req.source_page} | {excerpt} |\n")
                 f.write("\n")
 
             # Orphaned scenarios

@@ -83,52 +83,103 @@ git commit -m "Complete Step 1: Requirements assessment"
 
 Step 2: Extract and Number Requirements:
 
-From the source requirement documents, extract and clearly articulate all functional and non-functional requirements.
-Assign a unique ID to each requirement in the format: REQ-001, REQ-002, etc.
-Group requirements by functional area (e.g., User Management, Data Processing, Security, Performance).
+**CRITICAL: Two distinct approaches based on input document type:**
+
+**Approach A: Input Contains Documented Requirements**
+
+If the source document already contains explicitly documented requirements (e.g., numbered requirements, requirement IDs, formal specifications):
+- **Extract requirements EXACTLY as documented** - do not deviate from the source
+- **Do NOT generate additional requirements** - only use what is explicitly stated in the document
+- Preserve original requirement IDs if present, or assign IDs in format: REQ-001, REQ-002, etc.
+- Maintain the original structure and grouping from the source document
+- **Do NOT add implicit or derived requirements** - stick strictly to what is documented
+
+**Approach B: Input Does NOT Contain Documented Requirements**
+
+If the source document does not contain explicit requirements (e.g., business narrative, use cases, general specifications):
+- **Derive requirements from the source content**
+- For EACH derived requirement, you MUST include:
+  - **Source Page**: Page number where the requirement was derived from
+  - **Source Excerpt**: Direct quote or excerpt from the document that supports this requirement
+- This provides full traceability back to the source material
+
+**How to Detect Which Approach:**
+- **Use Approach A if**: Document contains phrases like "REQ-", "Requirement:", numbered requirements, formal specification sections
+- **Use Approach B if**: Document is narrative, descriptive, contains business cases, user stories without formal requirement IDs
 
 **REQUIRED FORMAT (for rtm_builder.py script consumption):**
 
-**ENHANCED FORMAT (with metadata - RECOMMENDED):**
+**Format for Approach A (Documented Requirements):**
 ```markdown
 ## [Functional Area Name]
 
-### REQ-001: [Requirement Title]
-**Description**: [Clear, concise requirement statement]
+### REQ-001: [Requirement Title from Source]
+**Description**: [Exact requirement statement from source document]
 **Priority**: Critical|High|Medium|Low
 **Type**: Functional|Non-Functional|Security|Performance|Usability
 **Affected Roles**: [Comma-separated list of user roles, e.g., "Buyer, Seller, Admin"]
 
-### REQ-002: [Requirement Title]
-**Description**: [Clear, concise requirement statement]
+### REQ-002: [Requirement Title from Source]
+**Description**: [Exact requirement statement from source document]
 **Priority**: High
 **Type**: Functional
 **Affected Roles**: Admin, Guest
 ```
 
-**ALTERNATE FORMATS (also supported):**
+**Format for Approach B (Derived Requirements - with source citations):**
 ```markdown
 ## [Functional Area Name]
-- **REQ-001**: [Clear, concise requirement statement]
-- **REQ-002**: [Clear, concise requirement statement]
+
+### REQ-001: [Derived Requirement Title]
+**Description**: [Clear, concise requirement statement derived from source]
+**Priority**: Critical|High|Medium|Low
+**Type**: Functional|Non-Functional|Security|Performance|Usability
+**Affected Roles**: [Comma-separated list of user roles]
+**Source Page**: Page X
+**Source Excerpt**: "[Direct quote or excerpt from source document that supports this requirement]"
+
+### REQ-002: [Derived Requirement Title]
+**Description**: [Clear, concise requirement statement derived from source]
+**Priority**: High
+**Type**: Functional
+**Affected Roles**: Admin, Guest
+**Source Page**: Page Y
+**Source Excerpt**: "[Direct quote or excerpt from source document]"
 ```
-OR
+
+**ALTERNATE FORMATS (also supported):**
+
+For Approach A:
 ```markdown
-| Requirement ID | Description | Priority | Type | Affected Roles |
-|---------------|-------------|----------|------|----------------|
-| REQ-001 | [Requirement statement] | High | Functional | Buyer, Admin |
-| REQ-002 | [Requirement statement] | Medium | Security | All Users |
+## [Functional Area Name]
+- **REQ-001**: [Exact requirement from source]
+- **REQ-002**: [Exact requirement from source]
+```
+
+For Approach B:
+```markdown
+## [Functional Area Name]
+- **REQ-001**: [Derived requirement] (Source: Page X - "[excerpt]")
+- **REQ-002**: [Derived requirement] (Source: Page Y - "[excerpt]")
 ```
 
 **Metadata Field Descriptions:**
 - **Priority**: Business priority (Critical, High, Medium, Low) - helps prioritize test execution
 - **Type**: Requirement category - helps organize testing by domain
 - **Affected Roles**: User roles impacted by this requirement - helps identify stakeholders and test coverage
+- **Source Page**: (Approach B only) Page number from source document
+- **Source Excerpt**: (Approach B only) Direct quote supporting the derived requirement
 
-Include both explicit requirements (stated in the document) and implicit requirements (derived from context).
-Save to OUTPUT_DIR/00_requirements.md (numbered 00 to appear first in directory listing).
-Count and report: State the total number of requirements extracted (e.g., "Extracted 47 requirements").
-This document will be used by Step 10 for Requirements Traceability Matrix generation.
+**Workflow:**
+1. First, analyze the input document to determine which approach (A or B) to use
+2. State your decision: "This document contains [documented requirements / narrative content requiring derivation]"
+3. If Approach A: Extract requirements exactly as documented, no additions
+4. If Approach B: Derive requirements and include source page + excerpt for each one
+5. Assign unique IDs in format: REQ-001, REQ-002, etc. (unless source has existing IDs)
+6. Group requirements by functional area
+7. Save to OUTPUT_DIR/00_requirements.md (numbered 00 to appear first in directory listing)
+8. Count and report: State the total number of requirements extracted (e.g., "Extracted 47 requirements from documented specifications" OR "Derived 47 requirements from source narrative with full traceability")
+9. This document will be used by Step 10 for Requirements Traceability Matrix generation
 
 **GIT CHECKPOINT - Commit Step 2:**
 ```bash
