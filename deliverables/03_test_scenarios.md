@@ -11,7 +11,7 @@
 As a visitor, I want to register on the website with my email and personal details, so that I can create an account and make purchases.
 
 **Priority**: Critical
-**Related Requirements**: FR-002
+**Related Requirements**: REQ-002
 
 **Details**: Complete registration flow including email verification link validation.
 
@@ -19,7 +19,7 @@ As a visitor, I want to register on the website with my email and personal detai
 As a visitor, I want the system to validate my email format during registration, so that I provide a valid email address.
 
 **Priority**: High
-**Related Requirements**: FR-002
+**Related Requirements**: REQ-002
 
 **Details**: Test email format validation (missing @, invalid domain, etc.).
 
@@ -27,7 +27,7 @@ As a visitor, I want the system to validate my email format during registration,
 As a visitor, I want the system to validate that my password and confirm password match, so that I don't lock myself out with a typo.
 
 **Priority**: High
-**Related Requirements**: FR-002
+**Related Requirements**: REQ-002
 
 **Details**: Password and confirm password fields must match.
 
@@ -35,7 +35,7 @@ As a visitor, I want the system to validate that my password and confirm passwor
 As a visitor, I want to be notified if my email is already registered, so that I can login instead of creating a duplicate account.
 
 **Priority**: High
-**Related Requirements**: FR-002
+**Related Requirements**: REQ-002
 
 **Details**: System should prevent duplicate email registration.
 
@@ -43,7 +43,7 @@ As a visitor, I want to be notified if my email is already registered, so that I
 As a visitor, I want to be prevented from registering if I don't accept terms, so that the website ensures legal compliance.
 
 **Priority**: Medium
-**Related Requirements**: FR-002
+**Related Requirements**: REQ-002
 
 **Details**: Terms and conditions checkbox must be checked.
 
@@ -51,7 +51,7 @@ As a visitor, I want to be prevented from registering if I don't accept terms, s
 As a new buyer, I want to verify my email address via verification link, so that I can activate my account.
 
 **Priority**: Critical
-**Related Requirements**: FR-002
+**Related Requirements**: REQ-002
 
 **Details**: Click verification link in email to activate account.
 
@@ -59,7 +59,7 @@ As a new buyer, I want to verify my email address via verification link, so that
 As a registered buyer, I want to login with my email and password, so that I can access my account.
 
 **Priority**: Critical
-**Related Requirements**: FR-001
+**Related Requirements**: REQ-001
 
 **Details**: Standard email/password login flow.
 
@@ -67,7 +67,7 @@ As a registered buyer, I want to login with my email and password, so that I can
 As a buyer, I want to be notified when my login credentials are incorrect, so that I can retry or reset my password.
 
 **Priority**: High
-**Related Requirements**: FR-001
+**Related Requirements**: REQ-001
 
 **Details**: Wrong password or non-existent email.
 
@@ -75,7 +75,7 @@ As a buyer, I want to be notified when my login credentials are incorrect, so th
 As a buyer who hasn't verified email, I want to be prevented from logging in, so that email verification is enforced.
 
 **Priority**: High
-**Related Requirements**: FR-001, FR-002
+**Related Requirements**: REQ-001, REQ-002
 
 **Details**: Account exists but email not yet verified.
 
@@ -83,7 +83,7 @@ As a buyer who hasn't verified email, I want to be prevented from logging in, so
 As a buyer, I want to login using my Facebook account, so that I can access the website without creating separate credentials.
 
 **Priority**: High
-**Related Requirements**: FR-001
+**Related Requirements**: REQ-001
 
 **Details**: OAuth flow with Facebook.
 
@@ -91,7 +91,7 @@ As a buyer, I want to login using my Facebook account, so that I can access the 
 As a buyer, I want to login using my Google account, so that I can access the website without creating separate credentials.
 
 **Priority**: High
-**Related Requirements**: FR-001
+**Related Requirements**: REQ-001
 
 **Details**: OAuth flow with Google.
 
@@ -99,7 +99,7 @@ As a buyer, I want to login using my Google account, so that I can access the we
 As a visitor using social login for the first time, I want the system to auto-create my account, so that I don't need to fill registration forms.
 
 **Priority**: High
-**Related Requirements**: FR-001, FR-002
+**Related Requirements**: REQ-001, REQ-002
 
 **Details**: Auto-registration via social login.
 
@@ -107,7 +107,7 @@ As a visitor using social login for the first time, I want the system to auto-cr
 As a buyer who forgot my password, I want to request a password reset link, so that I can regain access to my account.
 
 **Priority**: High
-**Related Requirements**: FR-001
+**Related Requirements**: REQ-001
 
 **Details**: Request password reset email.
 
@@ -115,7 +115,7 @@ As a buyer who forgot my password, I want to request a password reset link, so t
 As a buyer, I want to reset my password using the email link, so that I can create a new password and login.
 
 **Priority**: High
-**Related Requirements**: FR-001
+**Related Requirements**: REQ-001
 
 **Details**: Complete password reset flow.
 
@@ -123,7 +123,7 @@ As a buyer, I want to reset my password using the email link, so that I can crea
 As an admin, I want to login to the admin panel with my credentials, so that I can manage the website.
 
 **Priority**: Critical
-**Related Requirements**: FR-014
+**Related Requirements**: REQ-014
 
 **Details**: Admin authentication to backend.
 
@@ -131,7 +131,7 @@ As an admin, I want to login to the admin panel with my credentials, so that I c
 As a sub-admin, I want to login with my credentials and see only the sections I have access to, so that I can perform my assigned tasks.
 
 **Priority**: High
-**Related Requirements**: FR-014, FR-024
+**Related Requirements**: REQ-014, REQ-024
 
 **Details**: Role-based access control validation.
 
@@ -143,7 +143,7 @@ As a sub-admin, I want to login with my credentials and see only the sections I 
 As a guest user, I want to search for products using keywords, so that I can find specific items without logging in.
 
 **Priority**: Critical
-**Related Requirements**: FR-003
+**Related Requirements**: REQ-003
 
 **Details**: Search without authentication.
 
@@ -151,7 +151,7 @@ As a guest user, I want to search for products using keywords, so that I can fin
 As a user, I want to see a helpful message when my search returns no results, so that I can try different keywords.
 
 **Priority**: Medium
-**Related Requirements**: FR-003
+**Related Requirements**: REQ-003
 
 **Details**: Empty search results handling.
 
@@ -159,7 +159,7 @@ As a user, I want to see a helpful message when my search returns no results, so
 As a user, I want to browse products by selecting a category, so that I can explore products in areas I'm interested in.
 
 **Priority**: Critical
-**Related Requirements**: FR-003
+**Related Requirements**: REQ-003
 
 **Details**: Category navigation from homepage.
 
@@ -167,7 +167,7 @@ As a user, I want to browse products by selecting a category, so that I can expl
 As a user, I want to browse products by selecting a sub-category, so that I can narrow down to specific product types.
 
 **Priority**: Critical
-**Related Requirements**: FR-003
+**Related Requirements**: REQ-003
 
 **Details**: Sub-category drilling.
 
@@ -175,7 +175,7 @@ As a user, I want to browse products by selecting a sub-category, so that I can 
 As a user, I want to filter products by price, size, color, and other attributes, so that I can find products matching my preferences.
 
 **Priority**: High
-**Related Requirements**: FR-003
+**Related Requirements**: REQ-003
 
 **Details**: Multiple filter application.
 
@@ -183,7 +183,7 @@ As a user, I want to filter products by price, size, color, and other attributes
 As a user, I want to sort products by price (low to high or high to low), so that I can find products in my budget.
 
 **Priority**: High
-**Related Requirements**: FR-003
+**Related Requirements**: REQ-003
 
 **Details**: Price sorting ascending and descending.
 
@@ -191,7 +191,7 @@ As a user, I want to sort products by price (low to high or high to low), so tha
 As a user, I want to sort products by popularity, so that I can see the most popular items first.
 
 **Priority**: Medium
-**Related Requirements**: FR-003
+**Related Requirements**: REQ-003
 
 **Details**: Popularity-based sorting.
 
@@ -199,7 +199,7 @@ As a user, I want to sort products by popularity, so that I can see the most pop
 As a user, I want to see product thumbnails, names, and prices in listings, so that I can quickly evaluate options.
 
 **Priority**: Critical
-**Related Requirements**: FR-004
+**Related Requirements**: REQ-004
 
 **Details**: Product listing page display.
 
@@ -207,7 +207,7 @@ As a user, I want to see product thumbnails, names, and prices in listings, so t
 As a user, I want to see product ratings in the listing, so that I can judge product quality before clicking.
 
 **Priority**: High
-**Related Requirements**: FR-004
+**Related Requirements**: REQ-004
 
 **Details**: Star ratings display in listing.
 
@@ -219,7 +219,7 @@ As a user, I want to see product ratings in the listing, so that I can judge pro
 As a guest user, I want to view detailed product information, so that I can evaluate the product before deciding to register/login.
 
 **Priority**: Critical
-**Related Requirements**: FR-005
+**Related Requirements**: REQ-005
 
 **Details**: Product detail page access without login.
 
@@ -227,7 +227,7 @@ As a guest user, I want to view detailed product information, so that I can eval
 As a user, I want to view multiple product images in a gallery, so that I can see the product from different angles.
 
 **Priority**: High
-**Related Requirements**: FR-005
+**Related Requirements**: REQ-005
 
 **Details**: Image gallery navigation.
 
@@ -235,7 +235,7 @@ As a user, I want to view multiple product images in a gallery, so that I can se
 As a user, I want to see available sizes and colors for a product, so that I can select my preferred variant.
 
 **Priority**: Critical
-**Related Requirements**: FR-005
+**Related Requirements**: REQ-005
 
 **Details**: Variant selection interface.
 
@@ -243,7 +243,7 @@ As a user, I want to see available sizes and colors for a product, so that I can
 As a user, I want to check if shipping is available to my ZIP code, so that I know if I can order the product.
 
 **Priority**: High
-**Related Requirements**: FR-005
+**Related Requirements**: REQ-005
 
 **Details**: ZIP code validation and shipping availability check.
 
@@ -251,7 +251,7 @@ As a user, I want to check if shipping is available to my ZIP code, so that I kn
 As a user, I want to be notified if shipping is not available to my ZIP code, so that I don't waste time adding to cart.
 
 **Priority**: Medium
-**Related Requirements**: FR-005
+**Related Requirements**: REQ-005
 
 **Details**: Shipping unavailable message.
 
@@ -259,7 +259,7 @@ As a user, I want to be notified if shipping is not available to my ZIP code, so
 As a user, I want to read ratings and reviews from other buyers, so that I can make informed purchase decisions.
 
 **Priority**: High
-**Related Requirements**: FR-005, FR-011
+**Related Requirements**: REQ-005, REQ-011
 
 **Details**: Reviews display on product page.
 
@@ -271,7 +271,7 @@ As a user, I want to read ratings and reviews from other buyers, so that I can m
 As a guest user, I want to be prompted to login/register when adding to cart, so that I can save my cart items.
 
 **Priority**: Critical
-**Related Requirements**: FR-007
+**Related Requirements**: REQ-007
 
 **Details**: Cart requires authentication.
 
@@ -279,7 +279,7 @@ As a guest user, I want to be prompted to login/register when adding to cart, so
 As a logged-in buyer, I want to add products to my cart, so that I can purchase them later.
 
 **Priority**: Critical
-**Related Requirements**: FR-007
+**Related Requirements**: REQ-007
 
 **Details**: Standard add to cart flow.
 
@@ -287,7 +287,7 @@ As a logged-in buyer, I want to add products to my cart, so that I can purchase 
 As a buyer, I want to select size and color before adding to cart, so that I get the right product variant.
 
 **Priority**: Critical
-**Related Requirements**: FR-007, FR-005
+**Related Requirements**: REQ-007, REQ-005
 
 **Details**: Variant selection then add to cart.
 
@@ -295,7 +295,7 @@ As a buyer, I want to select size and color before adding to cart, so that I get
 As a buyer, I want to update quantities of items in my cart, so that I can order the right amount.
 
 **Priority**: High
-**Related Requirements**: FR-007
+**Related Requirements**: REQ-007
 
 **Details**: Increase/decrease quantity in cart.
 
@@ -303,7 +303,7 @@ As a buyer, I want to update quantities of items in my cart, so that I can order
 As a buyer, I want to remove items from my cart, so that I don't purchase unwanted products.
 
 **Priority**: High
-**Related Requirements**: FR-007
+**Related Requirements**: REQ-007
 
 **Details**: Delete item from cart.
 
@@ -311,7 +311,7 @@ As a buyer, I want to remove items from my cart, so that I don't purchase unwant
 As a buyer, I want to see item prices, subtotal, and total in my cart, so that I know how much I'll pay.
 
 **Priority**: Critical
-**Related Requirements**: FR-007
+**Related Requirements**: REQ-007
 
 **Details**: Price calculation display.
 
@@ -319,7 +319,7 @@ As a buyer, I want to see item prices, subtotal, and total in my cart, so that I
 As a buyer with an empty cart, I want to see a message indicating my cart is empty, so that I know to add items.
 
 **Priority**: Medium
-**Related Requirements**: FR-007
+**Related Requirements**: REQ-007
 
 **Details**: Empty state message.
 
@@ -331,7 +331,7 @@ As a buyer with an empty cart, I want to see a message indicating my cart is emp
 As a guest user, I want to be prompted to login when adding to wishlist, so that my wishlist is saved.
 
 **Priority**: High
-**Related Requirements**: FR-006
+**Related Requirements**: REQ-006
 
 **Details**: Wishlist requires authentication.
 
@@ -339,7 +339,7 @@ As a guest user, I want to be prompted to login when adding to wishlist, so that
 As a logged-in buyer, I want to add products to my wishlist, so that I can save items for later consideration.
 
 **Priority**: High
-**Related Requirements**: FR-006
+**Related Requirements**: REQ-006
 
 **Details**: Add to wishlist flow.
 
@@ -347,7 +347,7 @@ As a logged-in buyer, I want to add products to my wishlist, so that I can save 
 As a buyer, I want to view all items in my wishlist, so that I can review products I saved.
 
 **Priority**: High
-**Related Requirements**: FR-006
+**Related Requirements**: REQ-006
 
 **Details**: Wishlist page display.
 
@@ -355,7 +355,7 @@ As a buyer, I want to view all items in my wishlist, so that I can review produc
 As a buyer, I want to remove items from my wishlist, so that I can keep only items I'm interested in.
 
 **Priority**: High
-**Related Requirements**: FR-006
+**Related Requirements**: REQ-006
 
 **Details**: Delete from wishlist.
 
@@ -363,7 +363,7 @@ As a buyer, I want to remove items from my wishlist, so that I can keep only ite
 As a buyer, I want to move wishlist items to my cart, so that I can proceed to purchase.
 
 **Priority**: High
-**Related Requirements**: FR-006, FR-007
+**Related Requirements**: REQ-006, REQ-007
 
 **Details**: Wishlist to cart flow.
 
@@ -371,7 +371,7 @@ As a buyer, I want to move wishlist items to my cart, so that I can proceed to p
 As a buyer, I want to checkout items directly from my wishlist, so that I can quickly purchase saved items.
 
 **Priority**: Medium
-**Related Requirements**: FR-006, FR-008
+**Related Requirements**: REQ-006, REQ-008
 
 **Details**: Direct wishlist checkout.
 
@@ -383,7 +383,7 @@ As a buyer, I want to checkout items directly from my wishlist, so that I can qu
 As a buyer, I want to proceed to checkout from my cart, so that I can complete my purchase.
 
 **Priority**: Critical
-**Related Requirements**: FR-008
+**Related Requirements**: REQ-008
 
 **Details**: Cart to checkout transition.
 
@@ -391,7 +391,7 @@ As a buyer, I want to proceed to checkout from my cart, so that I can complete m
 As a buyer, I want to enter my billing address during checkout, so that payment can be processed.
 
 **Priority**: Critical
-**Related Requirements**: FR-008
+**Related Requirements**: REQ-008
 
 **Details**: Billing address form.
 
@@ -399,7 +399,7 @@ As a buyer, I want to enter my billing address during checkout, so that payment 
 As a buyer, I want to enter my shipping address during checkout, so that my order is delivered to the correct location.
 
 **Priority**: Critical
-**Related Requirements**: FR-008
+**Related Requirements**: REQ-008
 
 **Details**: Shipping address form.
 
@@ -407,7 +407,7 @@ As a buyer, I want to enter my shipping address during checkout, so that my orde
 As a buyer, I want to use the same address for billing and shipping, so that I don't have to enter it twice.
 
 **Priority**: Medium
-**Related Requirements**: FR-008
+**Related Requirements**: REQ-008
 
 **Details**: Address reuse option.
 
@@ -415,7 +415,7 @@ As a buyer, I want to use the same address for billing and shipping, so that I d
 As a buyer with saved addresses, I want to select from my address book, so that I don't have to re-enter addresses.
 
 **Priority**: High
-**Related Requirements**: FR-008, FR-010
+**Related Requirements**: REQ-008, REQ-010
 
 **Details**: Pre-saved address selection.
 
@@ -423,7 +423,7 @@ As a buyer with saved addresses, I want to select from my address book, so that 
 As a buyer, I want to see the complete order summary including items, subtotal, shipping, tax, and total, so that I can review before paying.
 
 **Priority**: Critical
-**Related Requirements**: FR-008
+**Related Requirements**: REQ-008
 
 **Details**: Order summary display.
 
@@ -431,7 +431,7 @@ As a buyer, I want to see the complete order summary including items, subtotal, 
 As a buyer, I want to pay using my credit card, so that I can complete my purchase.
 
 **Priority**: Critical
-**Related Requirements**: FR-008, FR-020
+**Related Requirements**: REQ-008, REQ-020
 
 **Details**: Credit card payment via Stripe.
 
@@ -439,7 +439,7 @@ As a buyer, I want to pay using my credit card, so that I can complete my purcha
 As a buyer, I want to pay using my debit card, so that I can complete my purchase.
 
 **Priority**: Critical
-**Related Requirements**: FR-008, FR-020
+**Related Requirements**: REQ-008, REQ-020
 
 **Details**: Debit card payment via Stripe.
 
@@ -447,7 +447,7 @@ As a buyer, I want to pay using my debit card, so that I can complete my purchas
 As a buyer, I want to pay using net banking, so that I can complete my purchase without a card.
 
 **Priority**: High
-**Related Requirements**: FR-008, FR-020
+**Related Requirements**: REQ-008, REQ-020
 
 **Details**: Net banking payment option.
 
@@ -455,7 +455,7 @@ As a buyer, I want to pay using net banking, so that I can complete my purchase 
 As a buyer, I want to be notified if my payment fails, so that I can retry with different payment method.
 
 **Priority**: High
-**Related Requirements**: FR-008, FR-020
+**Related Requirements**: REQ-008, REQ-020
 
 **Details**: Payment declined or failed.
 
@@ -463,7 +463,7 @@ As a buyer, I want to be notified if my payment fails, so that I can retry with 
 As a buyer, I want to receive an order confirmation email after successful payment, so that I have proof of purchase.
 
 **Priority**: Critical
-**Related Requirements**: FR-008
+**Related Requirements**: REQ-008
 
 **Details**: Email notification after order placement.
 
@@ -471,7 +471,7 @@ As a buyer, I want to receive an order confirmation email after successful payme
 As a guest user, I want to be required to login before checkout, so that the system can track my order.
 
 **Priority**: Critical
-**Related Requirements**: FR-008
+**Related Requirements**: REQ-008
 
 **Details**: Checkout authentication requirement.
 
@@ -483,7 +483,7 @@ As a guest user, I want to be required to login before checkout, so that the sys
 As a buyer, I want to view my past orders, so that I can track my purchase history.
 
 **Priority**: Critical
-**Related Requirements**: FR-012
+**Related Requirements**: REQ-012
 
 **Details**: Order history page.
 
@@ -491,7 +491,7 @@ As a buyer, I want to view my past orders, so that I can track my purchase histo
 As a buyer, I want to view detailed information about a specific order, so that I can review what I purchased.
 
 **Priority**: Critical
-**Related Requirements**: FR-012
+**Related Requirements**: REQ-012
 
 **Details**: Order detail page with items, prices, addresses.
 
@@ -499,7 +499,7 @@ As a buyer, I want to view detailed information about a specific order, so that 
 As a buyer, I want to see the current status of my order (Confirmed, In Process, Shipped, Delivered), so that I know when to expect delivery.
 
 **Priority**: Critical
-**Related Requirements**: FR-012, FR-017
+**Related Requirements**: REQ-012, REQ-017
 
 **Details**: Order status display.
 
@@ -507,7 +507,7 @@ As a buyer, I want to see the current status of my order (Confirmed, In Process,
 As a buyer with a shipped order, I want to see tracking information (carrier, tracking ID), so that I can track my package.
 
 **Priority**: High
-**Related Requirements**: FR-012, FR-017
+**Related Requirements**: REQ-012, REQ-017
 
 **Details**: Tracking details display.
 
@@ -515,7 +515,7 @@ As a buyer with a shipped order, I want to see tracking information (carrier, tr
 As a buyer, I want to quickly reorder items from a previous order, so that I can repurchase without searching again.
 
 **Priority**: Medium
-**Related Requirements**: FR-012
+**Related Requirements**: REQ-012
 
 **Details**: Reorder functionality.
 
@@ -523,7 +523,7 @@ As a buyer, I want to quickly reorder items from a previous order, so that I can
 As a buyer, I want to receive email notifications when my order status changes, so that I'm informed of progress.
 
 **Priority**: High
-**Related Requirements**: FR-008, FR-017
+**Related Requirements**: REQ-008, REQ-017
 
 **Details**: Email triggers for status changes.
 
@@ -535,7 +535,7 @@ As a buyer, I want to receive email notifications when my order status changes, 
 As a buyer who purchased a product, I want to post a rating (1-5 stars), so that I can share my opinion.
 
 **Priority**: High
-**Related Requirements**: FR-011
+**Related Requirements**: REQ-011
 
 **Details**: Star rating submission.
 
@@ -543,7 +543,7 @@ As a buyer who purchased a product, I want to post a rating (1-5 stars), so that
 As a buyer who purchased a product, I want to write a detailed review, so that I can help other buyers.
 
 **Priority**: High
-**Related Requirements**: FR-011
+**Related Requirements**: REQ-011
 
 **Details**: Review text submission.
 
@@ -551,7 +551,7 @@ As a buyer who purchased a product, I want to write a detailed review, so that I
 As a system, I want to prevent users from reviewing products they haven't purchased, so that reviews are authentic.
 
 **Priority**: High
-**Related Requirements**: FR-011
+**Related Requirements**: REQ-011
 
 **Details**: Purchase verification before review.
 
@@ -559,7 +559,7 @@ As a system, I want to prevent users from reviewing products they haven't purcha
 As a buyer, I want to view reviews I've written, so that I can track my feedback.
 
 **Priority**: Medium
-**Related Requirements**: FR-011, FR-010
+**Related Requirements**: REQ-011, REQ-010
 
 **Details**: My reviews section.
 
@@ -571,7 +571,7 @@ As a buyer, I want to view reviews I've written, so that I can track my feedback
 As a guest user, I want to share a product on social media, so that I can show it to friends without logging in.
 
 **Priority**: Low
-**Related Requirements**: FR-009
+**Related Requirements**: REQ-009
 
 **Details**: Social sharing without authentication.
 
@@ -579,7 +579,7 @@ As a guest user, I want to share a product on social media, so that I can show i
 As a buyer, I want to share a product on social media, so that I can recommend it to my network.
 
 **Priority**: Low
-**Related Requirements**: FR-009
+**Related Requirements**: REQ-009
 
 **Details**: Social sharing buttons.
 
@@ -591,7 +591,7 @@ As a buyer, I want to share a product on social media, so that I can recommend i
 As a buyer, I want to view my profile details (name, email, phone), so that I can verify my information.
 
 **Priority**: High
-**Related Requirements**: FR-010
+**Related Requirements**: REQ-010
 
 **Details**: Profile page display.
 
@@ -599,7 +599,7 @@ As a buyer, I want to view my profile details (name, email, phone), so that I ca
 As a buyer, I want to edit my email and phone number, so that I can keep my information current.
 
 **Priority**: High
-**Related Requirements**: FR-010
+**Related Requirements**: REQ-010
 
 **Details**: Profile update form.
 
@@ -607,7 +607,7 @@ As a buyer, I want to edit my email and phone number, so that I can keep my info
 As a buyer, I want to change my password, so that I can maintain account security.
 
 **Priority**: High
-**Related Requirements**: FR-010
+**Related Requirements**: REQ-010
 
 **Details**: Password change flow.
 
@@ -615,7 +615,7 @@ As a buyer, I want to change my password, so that I can maintain account securit
 As a buyer, I want to add, edit, and delete addresses in my address book, so that I can quickly select addresses during checkout.
 
 **Priority**: High
-**Related Requirements**: FR-010
+**Related Requirements**: REQ-010
 
 **Details**: Address CRUD operations.
 
@@ -623,7 +623,7 @@ As a buyer, I want to add, edit, and delete addresses in my address book, so tha
 As a buyer, I want to logout of my account, so that I can secure my session on shared devices.
 
 **Priority**: High
-**Related Requirements**: FR-010
+**Related Requirements**: REQ-010
 
 **Details**: Logout functionality.
 
@@ -635,7 +635,7 @@ As a buyer, I want to logout of my account, so that I can secure my session on s
 As a buyer, I want to contact support via email form, so that I can get help with my queries.
 
 **Priority**: High
-**Related Requirements**: FR-013
+**Related Requirements**: REQ-013
 
 **Details**: Contact form submission.
 
@@ -643,7 +643,7 @@ As a buyer, I want to contact support via email form, so that I can get help wit
 As an admin, I want to receive email notifications for support requests, so that I can respond to customer queries.
 
 **Priority**: High
-**Related Requirements**: FR-013, FR-027
+**Related Requirements**: REQ-013, REQ-027
 
 **Details**: Email notification to admin.
 
@@ -655,7 +655,7 @@ As an admin, I want to receive email notifications for support requests, so that
 As an admin, I want to view dashboard with key metrics (active buyers, products, revenue), so that I can monitor business performance.
 
 **Priority**: Critical
-**Related Requirements**: FR-015
+**Related Requirements**: REQ-015
 
 **Details**: Dashboard analytics display.
 
@@ -667,7 +667,7 @@ As an admin, I want to view dashboard with key metrics (active buyers, products,
 As an admin, I want to view list of all registered buyers, so that I can manage customers.
 
 **Priority**: Critical
-**Related Requirements**: FR-016
+**Related Requirements**: REQ-016
 
 **Details**: Buyers listing page.
 
@@ -675,7 +675,7 @@ As an admin, I want to view list of all registered buyers, so that I can manage 
 As an admin, I want to view detailed buyer information (profile, addresses, orders, wishlist, cart), so that I can assist customers.
 
 **Priority**: High
-**Related Requirements**: FR-016
+**Related Requirements**: REQ-016
 
 **Details**: Buyer detail page.
 
@@ -683,7 +683,7 @@ As an admin, I want to view detailed buyer information (profile, addresses, orde
 As an admin, I want to activate or deactivate buyer accounts, so that I can manage access.
 
 **Priority**: High
-**Related Requirements**: FR-016
+**Related Requirements**: REQ-016
 
 **Details**: Account status toggle.
 
@@ -691,7 +691,7 @@ As an admin, I want to activate or deactivate buyer accounts, so that I can mana
 As an admin, I want to edit buyer account details, so that I can correct information when needed.
 
 **Priority**: Medium
-**Related Requirements**: FR-016
+**Related Requirements**: REQ-016
 
 **Details**: Buyer info update.
 
@@ -703,7 +703,7 @@ As an admin, I want to edit buyer account details, so that I can correct informa
 As an admin, I want to view list of all orders with current status, so that I can manage order fulfillment.
 
 **Priority**: Critical
-**Related Requirements**: FR-017
+**Related Requirements**: REQ-017
 
 **Details**: Orders listing page.
 
@@ -711,7 +711,7 @@ As an admin, I want to view list of all orders with current status, so that I ca
 As an admin, I want to filter orders by status (Open, Confirmed, In Process, Shipped, Delivered), so that I can focus on specific order groups.
 
 **Priority**: High
-**Related Requirements**: FR-017
+**Related Requirements**: REQ-017
 
 **Details**: Order filtering.
 
@@ -719,7 +719,7 @@ As an admin, I want to filter orders by status (Open, Confirmed, In Process, Shi
 As an admin, I want to update order status from Open to Confirmed, so that I can indicate order acceptance.
 
 **Priority**: Critical
-**Related Requirements**: FR-017
+**Related Requirements**: REQ-017
 
 **Details**: Status change workflow.
 
@@ -727,7 +727,7 @@ As an admin, I want to update order status from Open to Confirmed, so that I can
 As an admin, I want to update order status to In Process, so that buyers know their order is being prepared.
 
 **Priority**: Critical
-**Related Requirements**: FR-017
+**Related Requirements**: REQ-017
 
 **Details**: Status change workflow.
 
@@ -735,7 +735,7 @@ As an admin, I want to update order status to In Process, so that buyers know th
 As an admin, I want to mark order as Shipped and add tracking details (carrier, tracking ID), so that buyers can track their shipment.
 
 **Priority**: Critical
-**Related Requirements**: FR-017
+**Related Requirements**: REQ-017
 
 **Details**: Shipment details entry.
 
@@ -743,7 +743,7 @@ As an admin, I want to mark order as Shipped and add tracking details (carrier, 
 As an admin, I want to mark order as Delivered, so that the order lifecycle is complete.
 
 **Priority**: Critical
-**Related Requirements**: FR-017
+**Related Requirements**: REQ-017
 
 **Details**: Final status update.
 
@@ -751,7 +751,7 @@ As an admin, I want to mark order as Delivered, so that the order lifecycle is c
 As an admin, I want to view complete order details (items, prices, addresses, payment status), so that I can fulfill orders correctly.
 
 **Priority**: Critical
-**Related Requirements**: FR-017
+**Related Requirements**: REQ-017
 
 **Details**: Order detail view.
 
@@ -759,7 +759,7 @@ As an admin, I want to view complete order details (items, prices, addresses, pa
 As an admin, I want to edit order information if needed, so that I can correct errors.
 
 **Priority**: Medium
-**Related Requirements**: FR-017
+**Related Requirements**: REQ-017
 
 **Details**: Order editing capability.
 
@@ -771,7 +771,7 @@ As an admin, I want to edit order information if needed, so that I can correct e
 As an admin, I want to create new product categories, so that I can organize products.
 
 **Priority**: Critical
-**Related Requirements**: FR-018
+**Related Requirements**: REQ-018
 
 **Details**: Category creation form.
 
@@ -779,7 +779,7 @@ As an admin, I want to create new product categories, so that I can organize pro
 As an admin, I want to create sub-categories under categories, so that I can further organize products.
 
 **Priority**: Critical
-**Related Requirements**: FR-018
+**Related Requirements**: REQ-018
 
 **Details**: Sub-category creation.
 
@@ -787,7 +787,7 @@ As an admin, I want to create sub-categories under categories, so that I can fur
 As an admin, I want to edit category details, so that I can update category information.
 
 **Priority**: High
-**Related Requirements**: FR-018
+**Related Requirements**: REQ-018
 
 **Details**: Category update.
 
@@ -795,7 +795,7 @@ As an admin, I want to edit category details, so that I can update category info
 As an admin, I want to activate or deactivate categories, so that I can control category visibility.
 
 **Priority**: High
-**Related Requirements**: FR-018
+**Related Requirements**: REQ-018
 
 **Details**: Category status toggle.
 
@@ -803,7 +803,7 @@ As an admin, I want to activate or deactivate categories, so that I can control 
 As an admin, I want to add new products with details (name, description, price, category, images, variants), so that I can sell them on the website.
 
 **Priority**: Critical
-**Related Requirements**: FR-019
+**Related Requirements**: REQ-019
 
 **Details**: Product creation form.
 
@@ -811,7 +811,7 @@ As an admin, I want to add new products with details (name, description, price, 
 As an admin, I want to upload multiple product images and set thumbnail, so that buyers can see the product.
 
 **Priority**: Critical
-**Related Requirements**: FR-019
+**Related Requirements**: REQ-019
 
 **Details**: Image upload interface.
 
@@ -819,7 +819,7 @@ As an admin, I want to upload multiple product images and set thumbnail, so that
 As an admin, I want to add product variants with different sizes and colors, so that buyers have options.
 
 **Priority**: Critical
-**Related Requirements**: FR-019
+**Related Requirements**: REQ-019
 
 **Details**: Variants management.
 
@@ -827,7 +827,7 @@ As an admin, I want to add product variants with different sizes and colors, so 
 As an admin, I want to edit product information, so that I can update product details.
 
 **Priority**: High
-**Related Requirements**: FR-019
+**Related Requirements**: REQ-019
 
 **Details**: Product update form.
 
@@ -835,7 +835,7 @@ As an admin, I want to edit product information, so that I can update product de
 As an admin, I want to activate or deactivate products, so that I can control product availability.
 
 **Priority**: High
-**Related Requirements**: FR-019
+**Related Requirements**: REQ-019
 
 **Details**: Product status toggle.
 
@@ -847,7 +847,7 @@ As an admin, I want to activate or deactivate products, so that I can control pr
 As an admin, I want to view my bank account details for receiving payments, so that I can verify payment settings.
 
 **Priority**: Medium
-**Related Requirements**: FR-020
+**Related Requirements**: REQ-020
 
 **Details**: Payment settings display.
 
@@ -855,7 +855,7 @@ As an admin, I want to view my bank account details for receiving payments, so t
 As an admin, I want to edit bank account details, so that I can update payment settings.
 
 **Priority**: Medium
-**Related Requirements**: FR-020
+**Related Requirements**: REQ-020
 
 **Details**: Payment settings update.
 
@@ -863,7 +863,7 @@ As an admin, I want to edit bank account details, so that I can update payment s
 As an admin, I want to view payment status for each order, so that I can track revenue.
 
 **Priority**: High
-**Related Requirements**: FR-020, FR-017
+**Related Requirements**: REQ-020, REQ-017
 
 **Details**: Payment status in order details.
 
@@ -875,7 +875,7 @@ As an admin, I want to view payment status for each order, so that I can track r
 As an admin, I want to approve reviews submitted by buyers, so that they appear on the product page.
 
 **Priority**: Medium
-**Related Requirements**: FR-021
+**Related Requirements**: REQ-021
 
 **Details**: Review approval workflow.
 
@@ -883,7 +883,7 @@ As an admin, I want to approve reviews submitted by buyers, so that they appear 
 As an admin, I want to reject inappropriate reviews, so that I can maintain review quality.
 
 **Priority**: Medium
-**Related Requirements**: FR-021
+**Related Requirements**: REQ-021
 
 **Details**: Review rejection workflow.
 
@@ -895,7 +895,7 @@ As an admin, I want to reject inappropriate reviews, so that I can maintain revi
 As an admin, I want to generate reports on products uploaded by date range, so that I can track catalog growth.
 
 **Priority**: High
-**Related Requirements**: FR-022
+**Related Requirements**: REQ-022
 
 **Details**: Products report generation.
 
@@ -903,7 +903,7 @@ As an admin, I want to generate reports on products uploaded by date range, so t
 As an admin, I want to generate revenue reports by date/week/month/year, so that I can track sales performance.
 
 **Priority**: High
-**Related Requirements**: FR-022
+**Related Requirements**: REQ-022
 
 **Details**: Revenue report generation.
 
@@ -911,7 +911,7 @@ As an admin, I want to generate revenue reports by date/week/month/year, so that
 As an admin, I want to export reports to PDF format, so that I can share with stakeholders.
 
 **Priority**: High
-**Related Requirements**: FR-022
+**Related Requirements**: REQ-022
 
 **Details**: PDF export.
 
@@ -919,7 +919,7 @@ As an admin, I want to export reports to PDF format, so that I can share with st
 As an admin, I want to export reports to Excel format, so that I can perform further analysis.
 
 **Priority**: High
-**Related Requirements**: FR-022
+**Related Requirements**: REQ-022
 
 **Details**: Excel export.
 
@@ -930,10 +930,10 @@ As an admin, I want to export reports to Excel format, so that I can perform fur
 (Note: Non-functional testing scenarios are typically handled separately through performance testing, security testing, and reliability testing frameworks, but are documented here for completeness.)
 
 **NFR Scenarios** (covered through specialized testing):
-- **NFR-001 Testing**: Concurrent user load testing (100 users)
-- **NFR-002 Testing**: Page load time testing (<30 seconds - note: this should be <3 seconds ideally)
-- **NFR-003 Testing**: Error handling and 404 page testing
-- **NFR-004 Testing**: SSL/TLS certificate testing, payment encryption validation
+- **NREQ-001 Testing**: Concurrent user load testing (100 users)
+- **NREQ-002 Testing**: Page load time testing (<30 seconds - note: this should be <3 seconds ideally)
+- **NREQ-003 Testing**: Error handling and 404 page testing
+- **NREQ-004 Testing**: SSL/TLS certificate testing, payment encryption validation
 
 ---
 
